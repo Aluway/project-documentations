@@ -35,13 +35,40 @@ Every `.md` under `docs/**` (plus the root `AGENTS.md`) carries a YAML frontmatt
 
 ## Using this template
 
-**Start here:** [`docs/onboarding/01-first-fork.md`](docs/onboarding/01-first-fork.md) — detailed day-1 checklist (~15 steps) from clone to first green-linter commit, plus branches for monorepo / fullstack / SSR / Expo / solo. The short version below is enough to get going; the chapter is where you pick up every detail.
+### One-command install (recommended)
 
-1. **Fork or copy** into a new project repository.
-2. **Fill [`docs/code-style/PROFILE.md`](docs/code-style/PROFILE.md)** in the first PR after copying. Until then, agents work by the fallback strategy documented in that file and flag every output as pending review.
-3. **Adjust decisions** — any [ADR](docs/decisions/) that doesn't match your project's context is overridden by a new ADR with `supersedes: <id>`.
-4. **Run `npm run lint`** before committing documentation changes. The linter validates frontmatter, internal links, and ADR chain integrity.
-5. **Enable the GitHub Actions workflow** at [`.github/workflows/docs-lint.yml`](.github/workflows/docs-lint.yml) — it runs the linter on every PR touching docs.
+From the target project root:
+
+```bash
+# Brand-new project:
+mkdir my-project && cd my-project && git init -b main
+npx github:Aluway/project-documentations
+
+# Add into an existing project:
+cd my-existing-project
+npx github:Aluway/project-documentations
+```
+
+The installer:
+- Copies `docs/`, `scripts/`, `.github/`, `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `.env.example`, `.gitattributes` — **only if not already present**.
+- **Smart-merges `package.json`**: your values always win; template adds missing scripts (`lint`, `lint:docs`) and dev-tooling scaffolds.
+- **Never overwrites** existing `README.md`, `CHANGELOG.md`, `LICENSE`, `.gitignore` — these are project-specific.
+- Prints a summary of what was copied, merged, and skipped.
+
+Flags: `--dry-run`, `--force`, `--target=PATH`. See [`scripts/install.mjs`](scripts/install.mjs) header for details.
+
+### GitHub "Use this template" button
+
+Alternatively, for a brand-new GitHub repo: click **Use this template** on this page → **Create a new repository**. Then clone and continue with the onboarding below.
+
+### After install — day-1 checklist
+
+**Start here:** [`docs/onboarding/01-first-fork.md`](docs/onboarding/01-first-fork.md) — ~15-step checklist from clone to first green-linter commit, plus branches for monorepo / fullstack / SSR / Expo / solo.
+
+1. Fill [`docs/code-style/PROFILE.md`](docs/code-style/PROFILE.md) with your actual stack.
+2. Review [ADRs](docs/decisions/) — any decision not matching your project is overridden by a new ADR with `supersedes: <id>`.
+3. Run `npm run lint` before every docs commit. The linter validates frontmatter, internal links, and ADR chain integrity.
+4. The GitHub Actions workflow at [`.github/workflows/docs-lint.yml`](.github/workflows/docs-lint.yml) runs the linter on every PR touching docs.
 
 ---
 
