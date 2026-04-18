@@ -1,0 +1,243 @@
+---
+version: 1.0.1
+last-reviewed: 2026-04-17
+status: active
+---
+
+# 06 — Правила импортов
+
+> Оглавление: [`README.md`](README.md).
+
+Этот раздел консолидирует все правила импортов: направление между слоями, изоляция слайсов, границы Public API, стиль путей.
+
+---
+
+## 1. Иерархия слоёв
+
+Слои упорядочены сверху вниз:
+
+```
+app > pages > widgets > features > entities > shared
+```
+
+**Правило:** модуль **MUST** импортировать только из слоёв **строго ниже** своего.
+
+### Разрешённые направления
+
+| Из \ В    | app | pages | widgets | features | entities | shared |
+|-----------|:---:|:-----:|:-------:|:--------:|:--------:|:------:|
+| app       |  —  |   ✓   |    ✓    |    ✓     |    ✓     |   ✓    |
+| pages     |  ✗  |   ✗   |    ✓    |    ✓     |    ✓     |   ✓    |
+| widgets   |  ✗  |   ✗   |    ✗    |    ✓     |    ✓     |   ✓    |
+| features  |  ✗  |   ✗   |    ✗    |    ✗     |    ✓     |   ✓    |
+| entities  |  ✗  |   ✗   |    ✗    |    ✗     |    ✗*    |   ✓    |
+| shared    |  ✗  |   ✗   |    ✗    |    ✗     |    ✗     |   ✓    |
+
+`✗*` на `entities → entities` — допустимо **только** через нотацию `@x`. См. [04-cross-imports.md](04-cross-imports.md).
+
+### ✓ Корректно
+
+```ts
+// features/add-to-cart/ui/add-to-cart-button.tsx
+import { Button } from "@/shared/ui/button";
+import { useCart } from "@/entities/cart";
+```
+
+### ✗ Некорректно
+
+```ts
+// entities/user/model/use-user.ts
+import { LikeButton } from "@/features/like-post";   // ✗ entity импортирует feature
+```
+
+```ts
+// shared/ui/button/button.tsx
+import { User } from "@/entities/user";              // ✗ shared импортирует entity
+```
+
+```ts
+// features/comment/ui/comment-list.tsx
+import { AddToCart } from "@/features/add-to-cart";  // ✗ кросс-импорт одного слоя
+```
+
+---
+
+## 2. Изоляция слайсов
+
+Слайсы одного слоя **MUST NOT** импортировать друг друга.
+
+- Исключение: `entities/*` только через `@x`.
+- Если кажется, что на `features/widgets/pages` нужен кросс-импорт — пересматривайте декомпозицию (см. [раздел «Не-entity слои» в 04-cross-imports.md](04-cross-imports.md#не-entity-слои)).
+
+---
+
+## 3. Граница Public API
+
+Внешний код **MUST** импортировать через `index.ts` слайса. Глубокие импорты во внутренности другого слайса запрещены.
+
+✓ Корректно:
+```ts
+import { UserCard } from "@/entities/user";
+```
+
+✗ Некорректно:
+```ts
+import { UserCard } from "@/entities/user/ui/user-card";   // ✗ глубокий импорт
+import { userStore } from "@/entities/user/model/store";    // ✗ глубокий импорт
+```
+
+**Исключение для своего слайса:** файлы **внутри** слайса не проходят через Public API — используйте относительные пути.
+
+✓ Корректно (в `entities/user/ui/user-card.tsx`):
+```ts
+import type { User } from "../model/types";
+import { formatUserName } from "../lib/format-user-name";
+```
+
+✗ Некорректно (в `entities/user/ui/user-card.tsx`):
+```ts
+import type { User } from "@/entities/user";   // ✗ повторный вход в свой барел
+```
+
+---
+
+## 4. Стиль путей
+
+### 4.1 Абсолютные алиасы для межслайсовых / межслоевых импортов
+
+Настройте проектный алиас (например, `@/*` → `src/*`) в бандлере и `tsconfig.json`. Используйте его для любых импортов, пересекающих границы слайсов или слоёв.
+
+Минимальная настройка `tsconfig.json`:
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
+```
+
+Большинство бандлеров (Vite, webpack, Rollup, esbuild) читают это автоматически или требуют одну строку плагина. **MUST** держать алиас одинаковым в конфиге бандлера и в `tsconfig.json` — расхождение между ними — самая частая причина «собирается, но IDE ругается».
+
+✓ Корректно:
+```ts
+import { Button } from "@/shared/ui/button";
+import { UserCard } from "@/entities/user";
+```
+
+✗ Некорректно:
+```ts
+import { Button } from "../../../shared/ui/button";   // ✗ длинный относительный
+```
+
+### 4.2 Относительные пути внутри слайса
+
+Внутри слайса импорты **MUST** быть относительными и **MUST** указывать прямо на целевой файл (не через `index.ts`).
+
+✓ Корректно:
+```ts
+import { parseDate } from "../lib/parse-date";
+```
+
+✗ Некорректно:
+```ts
+import { parseDate } from "@/entities/user/lib/parse-date";   // ✗ абсолютный на свой слайс
+```
+
+### 4.3 Внутри `shared`
+
+В `shared` нет слайсов; внутренние файлы **MAY** свободно импортировать друг друга. Для единообразия **SHOULD** использоваться алиасные импорты; относительные — **MAY**.
+
+---
+
+## 5. Порядок импортов (рекомендация)
+
+Внутри каждого файла группируйте импорты в таком порядке, разделяя пустой строкой:
+
+1. Внешние пакеты (`react`, `dayjs`, `@tanstack/...`)
+2. Абсолютные алиасные импорты, по слоям (сверху вниз): `@/app`, `@/pages`, `@/widgets`, `@/features`, `@/entities`, `@/shared`
+3. Относительные импорты внутри текущего слайса
+
+✓ Пример:
+```ts
+import { useEffect } from "react";
+
+import { Button } from "@/shared/ui/button";
+import { useUser } from "@/entities/user";
+
+import type { Props } from "../model/types";
+import { formatUserName } from "../lib/format-user-name";
+```
+
+Это **SHOULD**, не **MUST** — сочетайте с автоматическим форматтером (Prettier-сортировщик импортов, ESLint `import/order`), а не полагайтесь на ручную дисциплину.
+
+---
+
+## 6. Сводка
+
+| Правило                                                         | Статус  |
+|-----------------------------------------------------------------|---------|
+| Верхний слой импортирует из нижнего                              | MUST    |
+| Кросс-импорты в одном слое (кроме `@x` в entities)               | ЗАПРЕТ  |
+| Внешний потребитель импортирует через `index.ts` слайса          | MUST    |
+| Wildcard-ре-экспорты в `index.ts`                                | ЗАПРЕТ  |
+| Повторный вход в свой слайс через алиас                          | ЗАПРЕТ  |
+| Абсолютные алиасы для межслайсовых импортов                      | MUST    |
+| Относительные пути внутри одного слайса                          | MUST    |
+
+---
+
+## 7. Type vs runtime импорты
+
+Используйте `import type { ... }` для всего, что **стирается на этапе компиляции** — типов-алиасов, интерфейсов, generic-параметров, type-only импортов из `@x`-фасадов. Обычные runtime-импорты оставляйте для значений, компонентов, функций.
+
+✓ Корректно:
+```ts
+import type { User } from "@/entities/user";
+import { userStore, UserCard } from "@/entities/user";
+```
+
+✗ Некорректно:
+```ts
+import { User } from "@/entities/user";   // ✗ User — тип, бандлер не сможет его выкинуть
+```
+
+Плюсы `import type`:
+- Бандлер выкидывает импорт, если он использовался только для типов.
+- Type-only зависимости становятся визуально явными.
+- Исключены случайные runtime-связи через type-only пути.
+
+`@x`-фасады **SHOULD** ре-экспортироваться и импортироваться как `type`, если несут только типы:
+
+```ts
+// entities/user/@x/post.ts
+export type { User } from "../model/types";
+```
+
+```ts
+// entities/post/model/types.ts
+import type { User } from "@/entities/user/@x/post";
+```
+
+---
+
+## 8. Co-location тестов
+
+Тесты лежат **рядом с кодом, который тестируют**, внутри того же сегмента. Именуйте их `<file>.test.ts` / `.test.tsx` / `.spec.ts` (одна конвенция на репозиторий).
+
+✓ Корректно:
+```
+entities/user/
+├── lib/
+│   ├── format-user-name.ts
+│   └── format-user-name.test.ts
+└── ui/
+    ├── user-card.tsx
+    └── user-card.test.tsx
+```
+
+- Тесты **MUST NOT** ре-экспортироваться из `index.ts` слайса — они внутренние.
+- Тесты **MAY** импортировать из сегментов своего слайса по относительным путям, как и любой другой код слайса.
+- Отдельные папки `__tests__/` или `tests/` внутри слайса — **SHOULD NOT**, они дробят слайс на два параллельных дерева.

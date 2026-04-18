@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.yarn/cache/
+.yarn/install-state.gz
+
+# Build output
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.astro/
+*.tsbuildinfo
+
+# Test / coverage artefacts
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# Environment / secrets — NEVER commit, see docs/security/01-secrets.md
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS / editor metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+# Project-local temporary directories
+tmp/
+
+# Claude Code per-user config (not for template distribution)
+.claude/
+
+# Session memory artefacts (not for template distribution)
+.remember/

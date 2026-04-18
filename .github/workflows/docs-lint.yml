@@ -1,0 +1,28 @@
+name: Docs Lint
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "AGENTS.md"
+      - "README.md"
+      - "scripts/lint-docs.mjs"
+      - "package.json"
+      - ".github/workflows/docs-lint.yml"
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run docs linter
+        run: node scripts/lint-docs.mjs

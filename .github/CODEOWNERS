@@ -1,0 +1,36 @@
+# CODEOWNERS — ownership of paths, enforced via GitHub required-reviewers.
+#
+# Template repository placeholder. Fill in per your team, or delete this file
+# entirely in a solo repository. See docs/_meta/governance.md section 1 for
+# the ownership model this repo assumes, and docs/onboarding/01-first-fork.md
+# step 5 for the adoption checklist.
+#
+# Syntax: <path-pattern> <@github-handle-or-team> [<@another>…]
+# GitHub resolves the LAST matching pattern; order matters.
+# Docs: https://docs.github.com/en/repositories/managing-your-repositories-settings-and-features/customizing-your-repository/about-code-owners
+
+# ─── Example structure (replace or remove) ───────────────────────────────────
+
+# Default owner for everything in the repo (catch-all).
+# * @your-org/platform
+
+# Documentation standards — owned by the team that maintains them.
+# docs/_meta/       @your-org/dx
+# docs/architecture/ @your-org/frontend-platform
+# docs/code-style/   @your-org/frontend-platform
+# docs/workflow/     @your-org/dx
+# docs/security/     @your-org/security
+# docs/decisions/    # intentionally no single owner — any maintainer may propose an ADR
+
+# Security-sensitive infra files.
+# .github/             @your-org/dx
+# .env.example         @your-org/security
+# package.json         @your-org/frontend-platform
+# scripts/             @your-org/dx
+
+# Frontend code areas (adjust to your FSD structure).
+# src/shared/          @your-org/frontend-platform
+# src/entities/        @your-org/frontend-platform
+# src/features/auth/   @your-org/auth-team
+# src/features/cart/   @your-org/checkout-team
+# src/pages/           @your-org/frontend-platform
