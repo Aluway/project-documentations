@@ -1,0 +1,31 @@
+# Dependabot configuration for the template repository itself.
+#
+# Scope: only GitHub Actions used in this repo's CI (currently just
+# docs-lint.yml). The template has no runtime dependencies in package.json,
+# so npm / pnpm / yarn ecosystems are intentionally absent.
+#
+# Forks that add runtime dependencies MUST extend this file with the
+# appropriate package-ecosystem entry (npm / pnpm / yarn / cargo / pip …).
+# See docs/security/03-dependencies.md section 6 for automation policy.
+
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      day: monday
+      time: "09:00"
+      timezone: "Etc/UTC"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    labels:
+      - dependencies
+      - github-actions
+    groups:
+      ci-actions:
+        patterns:
+          - "*"
