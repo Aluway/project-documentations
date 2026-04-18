@@ -86,6 +86,12 @@ const DOWNSTREAM_SCRIPTS = ["lint", "lint:docs"];
 
 const results = { copied: [], merged: [], skipped: [], info: [] };
 
+// Which npm script to recommend in the final "Next steps" block. Defaults to
+// `lint` (our doc linter), but flips to `lint:docs` when the target already
+// has its own `scripts.lint` — in that case the existing value wins and the
+// doc linter lives under `lint:docs`.
+let lintCmdForNextSteps = "lint";
+
 const log = {
   copy: (p) => results.copied.push(relative(target, p).replace(/\\/g, "/")),
   merge: (p) => results.merged.push(relative(target, p).replace(/\\/g, "/")),
@@ -193,7 +199,9 @@ async function smartMergePackageJson() {
       description: "<your project description>",
       private: templatePkg.private ?? true,
       type: templatePkg.type,
-      license: templatePkg.license,
+      // Neutral default: force the user to pick a license deliberately
+      // instead of silently inheriting the template's MIT.
+      license: "UNLICENSED",
       scripts: freshScripts,
       engines: templatePkg.engines?.node
         ? { node: templatePkg.engines.node }
@@ -215,6 +223,9 @@ async function smartMergePackageJson() {
   }
 
   const existingPkg = JSON.parse(await readFile(dstAbs, "utf8"));
+  if (existingPkg.scripts?.lint) {
+    lintCmdForNextSteps = "lint:docs";
+  }
   const merged = mergePackageJson(templatePkg, existingPkg);
 
   if (dryRun) {
@@ -287,7 +298,9 @@ async function main() {
   console.log("Next steps:");
   console.log("  1. Read docs/onboarding/01-first-fork.md for the day-one checklist.");
   console.log("  2. Fill docs/code-style/PROFILE.md with your actual stack.");
-  console.log("  3. Run: npm run lint   (validates documentation integrity)");
+  console.log(
+    `  3. Run: npm run ${lintCmdForNextSteps}   (validates documentation integrity)`
+  );
   console.log("");
 }
 
