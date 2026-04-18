@@ -78,6 +78,10 @@ const SMART_MERGE = new Set(["package.json"]);
 // the template manually if they want our versions.
 const NEVER_AUTO = new Set(["README.md", "CHANGELOG.md", "LICENSE", ".gitignore"]);
 
+// Only these npm scripts from the template are propagated to downstream
+// projects. `install:template` is template-author plumbing and must not leak.
+const DOWNSTREAM_SCRIPTS = ["lint", "lint:docs"];
+
 // ─── Stats ───────────────────────────────────────────────────────────────────
 
 const results = { copied: [], merged: [], skipped: [], info: [] };
@@ -145,19 +149,24 @@ function mergePackageJson(templatePkg, existingPkg) {
   // be imposed on an existing package.json.
   const merged = { ...existingPkg };
 
-  // Scripts: add template's `lint` and `lint:docs` without clobbering user's.
-  if (templatePkg.scripts) {
-    merged.scripts = {
-      ...templatePkg.scripts,
-      ...(existingPkg.scripts ?? {}),
-    };
+  // Scripts: add `lint` / `lint:docs` only. Existing values always win;
+  // template-specific scripts (like `install:template`) are never propagated.
+  const contributed = {};
+  for (const key of DOWNSTREAM_SCRIPTS) {
+    if (templatePkg.scripts?.[key]) contributed[key] = templatePkg.scripts[key];
+  }
+  if (Object.keys(contributed).length > 0) {
+    merged.scripts = { ...contributed, ...(existingPkg.scripts ?? {}) };
   }
 
-  // engines.node: linter needs Node 20+. If user's package.json has no engines
-  // block, add just `{node: ">=20"}`. If they already have engines, leave it
-  // alone — don't assume we know better than their setup.
-  if (!existingPkg.engines && templatePkg.engines?.node) {
-    merged.engines = { node: templatePkg.engines.node };
+  // engines.node: linter needs Node 20+. Add it only if the user hasn't pinned
+  // `node` themselves. Other `engines` fields (npm, pnpm, …) are preserved
+  // as-is — we only contribute the `node` key.
+  if (!existingPkg.engines?.node && templatePkg.engines?.node) {
+    merged.engines = {
+      ...(existingPkg.engines ?? {}),
+      node: templatePkg.engines.node,
+    };
   }
 
   return merged;
@@ -170,18 +179,29 @@ async function smartMergePackageJson() {
   const templatePkg = JSON.parse(await readFile(srcAbs, "utf8"));
 
   if (!existsSync(dstAbs)) {
-    // No existing package.json — use template as-is but strip template-specific metadata.
-    const fresh = { ...templatePkg };
-    delete fresh.author;
-    delete fresh.repository;
-    delete fresh.bugs;
-    delete fresh.homepage;
-    delete fresh.keywords;
-    delete fresh.files;
-    delete fresh.bin;
-    fresh.name = "<your-project-name>";
-    fresh.version = "0.1.0";
-    fresh.description = "<your project description>";
+    // No existing package.json — emit a minimal stub. Only carry over what
+    // downstream projects actually need (engines.node + lint scripts); all
+    // template-author metadata (repository, bin, install:template, files,
+    // keywords, author, bugs, homepage) stays out.
+    const freshScripts = {};
+    for (const key of DOWNSTREAM_SCRIPTS) {
+      if (templatePkg.scripts?.[key]) freshScripts[key] = templatePkg.scripts[key];
+    }
+    const fresh = {
+      name: "<your-project-name>",
+      version: "0.1.0",
+      description: "<your project description>",
+      private: templatePkg.private ?? true,
+      type: templatePkg.type,
+      license: templatePkg.license,
+      scripts: freshScripts,
+      engines: templatePkg.engines?.node
+        ? { node: templatePkg.engines.node }
+        : undefined,
+    };
+    // Drop keys we left undefined so the emitted JSON stays clean.
+    for (const k of Object.keys(fresh)) if (fresh[k] === undefined) delete fresh[k];
+
     if (dryRun) {
       log.merge(dstAbs);
       return;
