@@ -41,9 +41,13 @@
     "scripts/",
     ".github/"
   ],
+  "bin": {
+    "project-documentations": "./scripts/install.mjs"
+  },
   "scripts": {
     "lint": "node scripts/lint-docs.mjs",
-    "lint:docs": "node scripts/lint-docs.mjs"
+    "lint:docs": "node scripts/lint-docs.mjs",
+    "install:template": "node scripts/install.mjs"
   },
   "engines": {
     "node": ">=20"
