@@ -1,8 +1,8 @@
 # 03 — Хуки (universal)
 
-> Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).
+> Оглавление: [`../README.md`](../README.md).
 
-Универсальные правила для хуков, доступных во всех современных версиях React (18+). Хуки React 19 (`use`, `useActionState`, `useOptimistic`, `useFormStatus`) — в [`variants/react-19-features.md`](../variants/react-19-features.md).
+Универсальные правила для хуков, доступных во всех современных версиях React (18+).
 
 ---
 
@@ -12,7 +12,7 @@
 - Хуки **MUST NOT** вызываться условно, в циклах, во вложенных функциях, `try/catch`.
 - `eslint-plugin-react-hooks` **MUST** быть включён в линтинг (см. [`10-tooling.md`](10-tooling.md)).
 
-> Исключение есть только для хука `use()` в React 19 — его можно вызывать условно. См. [`variants/react-19-features.md`](../variants/react-19-features.md).
+> Исключение есть только для хука `use()` в React 19 — его можно вызывать условно.
 
 ✓ Корректно:
 ```tsx
@@ -87,7 +87,7 @@ function reducer(state: State, action: Action): State {
 - Для синхронизации компонента с **внешней системой** (подписки, браузерные API, сторонние либы).
 - **MUST NOT** использовать `useEffect` для:
   - Трансформации данных для рендера — считайте прямо в теле.
-  - Запросов к API — это работа серверного-state инструмента (`variants/state-*`).
+  - Запросов к API — это работа серверного-state инструмента.
   - Синхронизации нескольких `useState` — объедините state или используйте `useReducer`.
 - Dependency array **MUST** быть точным. `react-hooks/exhaustive-deps` — **MUST** включено.
 
@@ -128,9 +128,8 @@ useEffect(() => {
 
 Правило применяется в зависимости от наличия React Compiler в проекте:
 
-- **Compiler **включён** (`React Compiler = enabled` в [`../PROFILE.md`](../PROFILE.md))** — ручные `useMemo`/`useCallback` **MUST NOT** писаться без обоснования. См. [`variants/react-compiler.md`](../variants/react-compiler.md).
-- **Compiler **выключен/недоступен** (`disabled` / `N/A`)** — мемоизация применяется осознанно после профилирования. См. [`variants/manual-memoization.md`](../variants/manual-memoization.md).
-- **Поле `React Compiler = TODO`** — агент **MUST** действовать по fallback-стратегии из `PROFILE.md`: попытаться уточнить; если нельзя — применять правила `manual-memoization.md` (консервативный дефолт: не мемоизировать профилактически) и пометить вывод как требующий ревью.
+- **С React Compiler** (включён в сборке) ручные `useMemo` / `useCallback` **MUST NOT** писаться без обоснования — компилятор мемоизирует сам.
+- **Без React Compiler** мемоизация применяется осознанно после профилирования, а не профилактически.
 
 ---
 
@@ -250,7 +249,7 @@ function useDebouncedValue<T>(value: T, delayMs: number): T {
 - **`useEffect` для производного состояния** (`useEffect(() => setDerived(compute(a, b)), [a, b])`) — **MUST NOT**. Вычисляйте при рендере либо через `useMemo`. См. раздел 4.
 - **`useEffect` для синхронизации props → state** — **MUST NOT**. Используйте `key` для сброса или вычисление при рендере. См. раздел 4.
 - **`useEffect` для преобразования событий в state без реального side-эффекта** — **MUST NOT**. Event-handler пишет в state напрямую.
-- **Ручные `useMemo` / `useCallback` / `React.memo` при включённом React Compiler** — **MUST NOT** без обоснования. Компилятор решает сам. См. раздел 5 и [`../variants/react-compiler.md`](../variants/react-compiler.md).
+- **Ручные `useMemo` / `useCallback` / `React.memo` при включённом React Compiler** — **MUST NOT** без обоснования. Компилятор решает сам. См. раздел 5.
 - **`useContext` для часто меняющегося state'а** — **MUST NOT**. Ре-рендерит всех потребителей; используйте стейт-менеджер. См. раздел 7.
 - **`useSyncExternalStore` в прикладном коде** — **MUST NOT**. Хук для авторов библиотек; в приложении используется менеджер, построенный поверх. См. раздел 10.
 - **Mutating ref mid-render** (`ref.current = value` в теле компонента) — **MUST NOT**. Пишите в `useEffect` / event-handler. См. раздел 6.
@@ -260,11 +259,11 @@ function useDebouncedValue<T>(value: T, delayMs: number): T {
 
 ## 13. React 19-хуки (указатель)
 
-Если в репо React ≥ 19 и в [`../PROFILE.md`](../PROFILE.md) активен `variants/react-19-features.md` — применяйте оттуда правила для:
+Если в репо React ≥ 19 — применяйте правила React 19 для:
 
 - `use()` — чтение промисов и контекста.
 - `useActionState` — управление формами-с-actions.
 - `useOptimistic` — оптимистичные обновления.
 - `useFormStatus` — состояние формы для дочерних кнопок.
 
-Если React 18 — эти хуки недоступны; используйте `useEffect` + `useState` или соответствующую библиотеку (см. `variants/forms-react-hook-form.md`).
+Если React 18 — эти хуки недоступны; используйте `useEffect` + `useState` или соответствующую библиотеку (например, React Hook Form).

@@ -1,19 +1,14 @@
 # 05 — Принципы работы с формами (universal)
 
-> Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).
+> Оглавление: [`../README.md`](../README.md).
 
-Универсальные принципы форм, независимые от выбранного инструмента. Конкретные инструменты — в `variants/forms-react-19-actions.md`, `variants/forms-react-hook-form.md`.
+Универсальные принципы форм, независимые от выбранного инструмента.
 
 ---
 
 ## 1. Выбор инструмента
 
-Определяется через [`../PROFILE.md`](../PROFILE.md):
-
-| Поле `Forms approach` | Активный вариант |
-|---|---|
-| React 19 Actions | [`variants/forms-react-19-actions.md`](../variants/forms-react-19-actions.md) |
-| React Hook Form | [`variants/forms-react-hook-form.md`](../variants/forms-react-hook-form.md) |
+Выбирается под проект: React 19 Actions (современные React 19 приложения) или React Hook Form (классика для сложных форм). Универсальные принципы ниже применимы к любому выбору.
 | native | только этот файл (базовые правила) |
 | Formik (legacy) | правила этого файла + отдельный миграционный план |
 

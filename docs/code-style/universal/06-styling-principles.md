@@ -1,22 +1,14 @@
 # 06 — Принципы стилизации (universal)
 
-> Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).
+> Оглавление: [`../README.md`](../README.md).
 
-Универсальные принципы стилизации, независимые от инструмента. Конкретные инструменты — в `variants/styling-tailwind.md`, `variants/styling-css-modules.md`.
+Универсальные принципы стилизации, независимые от инструмента.
 
 ---
 
 ## 1. Выбор инструмента
 
-Определяется через [`../PROFILE.md`](../PROFILE.md), поле `Primary styling`.
-
-| Значение | Активный вариант |
-|---|---|
-| Tailwind 3/4 | [`variants/styling-tailwind.md`](../variants/styling-tailwind.md) |
-| CSS Modules | [`variants/styling-css-modules.md`](../variants/styling-css-modules.md) |
-| styled-components / Emotion (legacy) | только этот файл + план миграции |
-| vanilla-extract | отдельный вариант (создать по необходимости) |
-| other | описать в `variants/` или в команде |
+Выбирается под проект: Tailwind (3 или 4), CSS Modules, или их комбинация. Универсальные принципы ниже применимы к любому выбору.
 
 ---
 

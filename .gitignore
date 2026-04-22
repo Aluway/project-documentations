@@ -20,7 +20,7 @@ coverage/
 playwright-report/
 test-results/
 
-# Environment / secrets — NEVER commit, see docs/security/01-secrets.md
+# Environment / secrets — NEVER commit
 .env
 .env.local
 .env.*.local

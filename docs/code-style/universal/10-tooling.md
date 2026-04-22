@@ -1,8 +1,8 @@
 # 10 — Инструменты (universal)
 
-> Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).
+> Оглавление: [`../README.md`](../README.md).
 
-Универсальные принципы конфигурации линтинга, форматирования, pre-commit и CI. Конкретные версии — в [`../PROFILE.md`](../PROFILE.md).
+Универсальные принципы конфигурации линтинга, форматирования, pre-commit и CI.
 
 ---
 
@@ -13,7 +13,6 @@
 - **ESLint ≥ 9 (flat config)** — **MUST** для новых проектов. Конфиг — `eslint.config.js`. `.eslintrc*` и `.eslintignore` **MUST NOT** использоваться.
 - **ESLint 8 (legacy)** — допустимо в существующих репо; при обновлении стека репо **SHOULD** переходить на 9.
 
-Какой у вас — фиксируется в [`../PROFILE.md`](../PROFILE.md), поле `ESLint`.
 
 ### Минимальные зависимости
 
@@ -29,7 +28,7 @@ npm install --save-dev \
   globals
 ```
 
-Дополнительно (по условиям `PROFILE.md`):
+Дополнительно (по условиям проекта):
 - `eslint-plugin-react-compiler` — если включён React Compiler.
 
 ### Базовый `eslint.config.js` (ESLint 9)
@@ -129,7 +128,7 @@ export default [
 
 ### Опция: React Compiler
 
-Если в [`../PROFILE.md`](../PROFILE.md) `React Compiler = enabled` — **MUST** добавить `eslint-plugin-react-compiler`. Подробные правила — в [`variants/react-compiler.md`](../variants/react-compiler.md).
+Если в проекте включён React Compiler — **MUST** добавить `eslint-plugin-react-compiler`.
 
 ```bash
 npm install --save-dev eslint-plugin-react-compiler
@@ -217,7 +216,7 @@ node_modules
 }
 ```
 
-Конкретный `test` зависит от раннера в [`../PROFILE.md`](../PROFILE.md) — замените на `jest` если нужно.
+Конкретный `test` зависит от раннера проекта — замените на `jest` если нужно.
 
 ---
 
@@ -339,7 +338,7 @@ trim_trailing_whitespace = false
 
 - **SHOULD** настраиваться Renovate или Dependabot (Renovate — более гибкий по конфигурации, Dependabot — проще и нативен для GitHub).
 - Patch/minor — пакетно, раз в неделю.
-- Major обновления React / TypeScript / ESLint — отдельным PR с прогоном полного CI и обновлением [`../PROFILE.md`](../PROFILE.md).
+- Major обновления React / TypeScript / ESLint — отдельным PR с прогоном полного CI.
 
 ---
 

@@ -1,8 +1,8 @@
 # 02 — Компоненты (universal)
 
-> Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).
+> Оглавление: [`../README.md`](../README.md).
 
-Правила универсальны для любой версии React. Версионно-специфичные фичи (`ref`-as-prop, Server/Client components, React 19-хуки) — в [`variants/react-19-features.md`](../variants/react-19-features.md).
+Правила универсальны для любой версии React.
 
 ---
 
@@ -178,7 +178,7 @@ function Parent() {
 ```
 
 - **Прямой доступ к DOM через `document.getElementById`** внутри компонента — **MUST NOT**. Используйте `ref`.
-- **Side effects в рендере** (fetch, setState, `console.log` прод) — **MUST NOT**. Только в обработчиках, эффектах, или серверных компонентах (см. [`variants/react-19-features.md`](../variants/react-19-features.md)).
+- **Side effects в рендере** (fetch, setState, `console.log` прод) — **MUST NOT**. Только в обработчиках, эффектах, или серверных компонентах.
 
 ---
 
@@ -188,7 +188,6 @@ function Parent() {
 
 - Интерактивные компоненты (обработчики, state, эффекты, браузерные API) — **client**, помечаются `"use client"`.
 - `"use client"` **SHOULD** ставиться на листьях (на кнопке, форме, модалке), а не на всей странице.
-- Детали и React-19-специфика — в [`variants/react-19-features.md`](../variants/react-19-features.md) (разделы Server/Client).
 
 Если проект — SPA без SSR, директива `"use client"` не нужна.
 
@@ -196,6 +195,5 @@ function Parent() {
 
 ## 10. Ref
 
-Для React ≤ 18 — `React.forwardRef`. Для React ≥ 19 — `ref` передаётся как обычный prop; `forwardRef` deprecated. См. [`variants/react-19-features.md`](../variants/react-19-features.md).
+Для React ≤ 18 — `React.forwardRef`. Для React ≥ 19 — `ref` передаётся как обычный prop; `forwardRef` deprecated.
 
-Определите версию React в вашем репо через [`../PROFILE.md`](../PROFILE.md) и следуйте соответствующему варианту.

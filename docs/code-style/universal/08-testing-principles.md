@@ -1,8 +1,8 @@
 # 08 — Принципы тестирования (universal)
 
-> Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).
+> Оглавление: [`../README.md`](../README.md).
 
-Универсальные принципы тестирования React-компонентов. Конкретный setup (Vitest / Jest) — в `variants/testing-vitest.md` (или аналоге для Jest).
+Универсальные принципы тестирования React-компонентов.
 
 ---
 
@@ -121,7 +121,7 @@ export const server = setupServer(
 );
 ```
 
-В setup'е тестов: `server.listen()` / `server.resetHandlers()` / `server.close()`. Детали — в `variants/testing-vitest.md`.
+В setup'е тестов: `server.listen()` / `server.resetHandlers()` / `server.close()`.
 
 ### Сброс моков
 

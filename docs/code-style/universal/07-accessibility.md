@@ -1,6 +1,6 @@
 # 07 — Accessibility (universal)
 
-> Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).
+> Оглавление: [`../README.md`](../README.md).
 
 Правила доступности React-приложений. Ориентир — WCAG 2.2 AA + WAI-ARIA 1.2. Применимо ко всем версиям React.
 

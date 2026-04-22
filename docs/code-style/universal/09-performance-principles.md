@@ -1,8 +1,8 @@
 # 09 — Принципы производительности (universal)
 
-> Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).
+> Оглавление: [`../README.md`](../README.md).
 
-Универсальные принципы производительности. Мемоизация зависит от наличия React Compiler: если он включён — [`variants/react-compiler.md`](../variants/react-compiler.md); если нет — [`variants/manual-memoization.md`](../variants/manual-memoization.md).
+Универсальные принципы производительности. Мемоизация зависит от наличия React Compiler — правила ниже учитывают оба случая.
 
 ---
 
@@ -36,13 +36,10 @@
 
 ## 3. Мемоизация — по профилю
 
-Поведение `useMemo` / `useCallback` / `React.memo` зависит от [`../PROFILE.md`](../PROFILE.md):
+Поведение `useMemo` / `useCallback` / `React.memo` зависит от React Compiler:
 
-| Compiler | Правило |
-|---|---|
-| `enabled` | Ручная мемоизация **MUST NOT** без обоснования. См. [`variants/react-compiler.md`](../variants/react-compiler.md). |
-| `disabled` / `N/A` | Мемоизация применяется осознанно после профилирования. См. [`variants/manual-memoization.md`](../variants/manual-memoization.md). |
-| `TODO` | Уточните у разработчика до изменений, влияющих на мемоизацию. |
+- **С React Compiler (enabled):** ручная мемоизация **MUST NOT** писаться без обоснования.
+- **Без React Compiler (disabled / N/A):** мемоизация применяется осознанно после профилирования.
 
 ---
 
@@ -140,7 +137,7 @@ const RichTextEditor = lazy(() => import("./rich-text-editor"));
 
 ## 9. Запросы и кеширование
 
-Серверное состояние **MUST** проходить через специализированный менеджер (см. `variants/state-*.md`). Ручные `fetch + useEffect + setState` **MUST NOT** использоваться в прикладном коде.
+Серверное состояние **MUST** проходить через специализированный менеджер (TanStack Query, RTK Query и т.п.). Ручные `fetch + useEffect + setState` **MUST NOT** использоваться в прикладном коде.
 
 - Cache-first подходы снижают LCP.
 - Параллельные запросы **SHOULD** использоваться вместо каскадных (каскады увеличивают TTFB линейно от глубины цепочки).
@@ -163,4 +160,4 @@ const RichTextEditor = lazy(() => import("./rich-text-editor"));
 - `useEffect` для синхронизации props → state — **MUST NOT** (см. [`03-hooks.md`](03-hooks.md) раздел 4).
 - Lazy-loading каждого мелкого компонента — **SHOULD NOT**.
 - Преждевременная виртуализация списка (до ~200 элементов) — **SHOULD NOT**.
-- Ручные мемоизации, когда профиль говорит «Compiler enabled» — **MUST NOT** (см. `variants/react-compiler.md`).
+- Ручные мемоизации при включённом React Compiler — **MUST NOT**.

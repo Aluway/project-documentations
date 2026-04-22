@@ -93,7 +93,7 @@ pages/
 
 ### Preload на intent
 
-- Prefetch при hover / focus / route-intent — **MAY** использоваться для ускорения perceived performance. См. примеры в [TanStack Query variant](../code-style/variants/state-tanstack-query.md) раздел 7.
+- Prefetch при hover / focus / route-intent — **MAY** использоваться для ускорения perceived performance.
 
 ---
 
@@ -104,7 +104,7 @@ URL-параметры (`/users/:id`) и query-string (`?page=2&sort=name`) — 
 - **MUST** — валидировать все параметры schema-парсером (Zod / Valibot / Yup) на границе использования в странице. Напрямую в JSX / логике — **MUST NOT** без валидации.
 - **MUST** — типизировать результат валидации явно. `useParams()` без runtime-проверки возвращает `Record<string, string | undefined>` — это не защита.
 - **MUST NOT** — передавать непровалидированные параметры в:
-  - `fetch` / `axios` URL (см. [`../security/02-input-handling.md`](../security/02-input-handling.md) раздел 4);
+  - `fetch` / `axios` URL (внешние URL **MUST** валидироваться по allowlist доменов, чтобы не было open redirect / SSRF);
   - `dangerouslySetInnerHTML`, `href`, `src`;
   - SQL-подобные query-параметры в backend-запросах без двойной валидации на сервере.
 - **SHOULD** — держать схемы параметров в `pages/<page>/model/params.ts` рядом с определением маршрута.
@@ -184,7 +184,6 @@ export function UserProfilePage() {
 - [`../code-style/universal/01-typescript.md`](../code-style/universal/01-typescript.md) раздел 3 — runtime-валидация параметров через schema-парсер.
 - [`../code-style/universal/09-performance-principles.md`](../code-style/universal/09-performance-principles.md) раздел 4 — Suspense + ErrorBoundary для lazy-loaded страниц.
 - [`../code-style/universal/07-accessibility.md`](../code-style/universal/07-accessibility.md) — focus management при смене маршрута: `MUST` возвращать фокус на осмысленный элемент (h1 страницы, main region).
-- [`../security/02-input-handling.md`](../security/02-input-handling.md) раздел 4 — open redirect: `returnTo` в query-string **MUST** проходить allowlist доменов.
 
 ---
 
