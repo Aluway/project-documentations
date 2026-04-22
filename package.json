@@ -37,16 +37,9 @@
     "CONTRIBUTING.md",
     "SECURITY.md",
     ".env.example",
-    "docs/",
-    "scripts/",
-    ".github/"
+    "docs/"
   ],
-  "bin": {
-    "project-documentations": "./scripts/install.mjs"
-  },
   "scripts": {
-    "lint": "node scripts/lint-docs.mjs",
-    "lint:docs": "node scripts/lint-docs.mjs",
     "install:template": "node scripts/install.mjs"
   },
   "engines": {
