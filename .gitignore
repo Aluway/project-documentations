@@ -48,3 +48,6 @@ tmp/
 
 # Session memory artefacts (not for template distribution)
 .remember/
+
+# Superpowers internal specs/plans (not for template distribution)
+docs/superpowers/
