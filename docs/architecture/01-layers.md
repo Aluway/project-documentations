@@ -1,9 +1,3 @@
----
-version: 1.0.2
-last-reviewed: 2026-04-17
-status: active
----
-
 # 01 — Слои
 
 > Оглавление: [`README.md`](README.md).

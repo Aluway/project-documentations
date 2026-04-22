@@ -1,9 +1,3 @@
----
-version: 1.0.1
-last-reviewed: 2026-04-17
-status: active
----
-
 # 10 — Инструменты (universal)
 
 > Оглавление: [`../README.md`](../README.md). Профиль стека: [`../PROFILE.md`](../PROFILE.md).

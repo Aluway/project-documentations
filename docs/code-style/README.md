@@ -1,9 +1,3 @@
----
-version: 1.0.0
-last-reviewed: 2026-04-17
-status: active
----
-
 # Code Style Guide — React + TypeScript
 
 > Расширенный справочник по стилю кода и best practices.

@@ -1,9 +1,3 @@
----
-version: 1.0.1
-last-reviewed: 2026-04-17
-status: active
----
-
 # 05 — Pages-first: дерево решений (v2.1)
 
 > Оглавление: [`README.md`](README.md).

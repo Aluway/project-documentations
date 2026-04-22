@@ -1,9 +1,3 @@
----
-version: 1.0.0
-last-reviewed: 2026-04-17
-status: active
----
-
 # AGENTS.md — Code Style (React + TypeScript)
 
 > Категорийная точка входа для ИИ-агентов.

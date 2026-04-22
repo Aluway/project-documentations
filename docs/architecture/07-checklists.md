@@ -1,9 +1,3 @@
----
-version: 1.0.2
-last-reviewed: 2026-04-17
-status: active
----
-
 # 07 — Чеклисты
 
 > Оглавление: [`README.md`](README.md).

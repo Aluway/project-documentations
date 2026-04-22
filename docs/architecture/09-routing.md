@@ -1,9 +1,3 @@
----
-version: 1.0.1
-last-reviewed: 2026-04-17
-status: active
----
-
 # 09 — Роутинг
 
 > Оглавление: [`README.md`](README.md).

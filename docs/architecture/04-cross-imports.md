@@ -1,9 +1,3 @@
----
-version: 1.0.0
-last-reviewed: 2026-04-17
-status: active
----
-
 # 04 — Кросс-импорты (нотация `@x`)
 
 > Оглавление: [`README.md`](README.md).

@@ -1,9 +1,3 @@
----
-version: 1.1.0
-last-reviewed: 2026-04-17
-status: active
----
-
 # AGENTS.md — Architecture (FSD 2.1)
 
 > Категорийная точка входа для ИИ-агентов.
