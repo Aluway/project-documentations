@@ -51,3 +51,6 @@ tmp/
 
 # Superpowers internal specs/plans (not for template distribution)
 docs/superpowers/
+
+# Private working notes (not for template distribution)
+docs/notes/
