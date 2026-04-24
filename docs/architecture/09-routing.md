@@ -91,6 +91,18 @@ pages/
 - **Исключения** (eager load): критические маршруты точки входа — landing, login, 404. **MAY** включаться в начальный bundle, если их отсутствие при первом рендере ломает UX.
 - Лень **MUST** сопровождаться Suspense-границей и ErrorBoundary на уровне `app/` или layout-страницы — см. [`../code-style/universal/09-performance-principles.md`](../code-style/universal/09-performance-principles.md) разделы 4–5.
 
+### Named exports работают с `React.lazy`
+
+Страницы **MAY** экспортироваться как named-экспорты (`export function OrdersPage`), не обязательно как default — последнее не требование FSD. В точке lazy-загрузки заверните named в `{ default: ... }`:
+
+```ts
+const OrdersPage = lazy(() =>
+  import("@/pages/orders").then((m) => ({ default: m.OrdersPage })),
+);
+```
+
+**Следствие для ESLint:** если у вас есть правило на запрет default-exports, нужно делать исключение **только** для `src/app/` (entry-file) и конфигов, а не для `src/pages/**` — у страниц default не требуется.
+
 ### Preload на intent
 
 - Prefetch при hover / focus / route-intent — **MAY** использоваться для ускорения perceived performance.

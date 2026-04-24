@@ -195,6 +195,17 @@ The file will have its original line endings in your working directory.
 
 TypeScript по конвенции импортит без расширения. Но Vite-шаблоны генерят `import App from './App.tsx'` (с расширением, разрешено через `allowImportingTsExtensions: true`). Codemod, переписывающий импорты, **MUST** закладывать оба паттерна: с расширением и без.
 
+### 7.5 Pre-existing lint errors ≠ регресс миграции
+
+После первого включения `eslint-plugin-import` типично видеть 100+ проблем. Разберите их по источникам:
+
+- **Новые** (добавлены текущим этапом миграции, например `import/*` правила) — **MUST** починить в рамках того же этапа.
+- **Унаследованные** от уже действующих конфигов (`tseslint.configs.recommended`, `react-hooks`) — ловились и до миграции, просто `npm run lint` не гонялся в CI. **MAY** оставить как tech debt, не раздувая скоуп инфраструктурных коммитов.
+
+Путаница двух категорий приводит к двум крайностям: либо в миграционный PR попадает стомиллион не-связанных исправлений (теряется атомарность), либо миграция блокируется на чужом долге. Правило: **сравниваете с baseline ДО миграции** (прогнать lint на main перед началом), всё сверху — ваше.
+
+Включение CI-линта **SHOULD** делаться отдельным коммитом с чётким commit-message: «was X errors before this PR, after this PR same X (tech debt tracked in #issue)».
+
 ---
 
 ## 8. Git rename detection при split'ах
