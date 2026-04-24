@@ -29,7 +29,7 @@ shared   ← низ
 - Глобальные провайдеры (store, тема, i18n, query-клиент)
 - Глобальные стили
 - Инициализация аналитики для всего приложения
-- DI-wiring для `shared/*`, которому нужны runtime-значения из домена (см. [`10-migration-guide.md` §11](10-migration-guide.md#11-инверсия-shared-upper-через-di-в-app))
+- DI-wiring для `shared/*`, которому нужны runtime-значения из домена (см. [`10-migration-guide.md` §11](10-migration-guide.md#11-инверсия-shared--upper-через-di-в-app))
 
 **MUST:**
 - Содержать сегменты напрямую, без слоя слайсов.

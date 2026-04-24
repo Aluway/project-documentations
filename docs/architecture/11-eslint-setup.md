@@ -26,7 +26,7 @@
 
 Требуемые пакеты:
 
-```
+```text
 eslint-plugin-import@^2.x
 eslint-import-resolver-typescript@^3.x
 ```
@@ -189,6 +189,10 @@ import type { User } from '../model/types';
 - **Pre-commit SHOULD** запускать lint на изменённых файлах (lint-staged / husky).
 - **Editor SHOULD** показывать ESLint-ошибки inline (`eslint.validate` в VS Code).
 
+### Временные нарушения во время миграции
+
+Если нарушение правила **MUST** быть временно допущено (обычно на середине миграции), не глушите его `eslint-disable` — используйте комментарий `TODO(fsd):` с контекстом и планом фикса. См. [10-migration-guide.md §4](10-migration-guide.md#4-todofsd-вместо-eslint-disable). `eslint-disable` скрывает нарушение от grep и отчётов — оставляйте его только для workaround'ов, которые чинить **не планируется**.
+
 Разовая настройка окупается на первом же ревью, где правило ловит импорт «снизу вверх» без участия человека.
 
 ---
@@ -197,10 +201,11 @@ import type { User } from '../model/types';
 
 | Рекомендация | Статус |
 |---|---|
-| `import/no-restricted-paths` с 15 layer-direction парами | MUST |
-| `eslint-import-resolver-typescript` подключён | MUST |
-| ESLint гоняется на CI с `--max-warnings=0` | MUST |
-| `eslint-plugin-boundaries` для slice isolation | MAY |
-| `import/no-internal-modules` для запрета deep imports | SHOULD |
-| Периодический bash-audit пропущенного правилами — [`12-audit.md`](12-audit.md) | SHOULD |
-| Глобальный `--legacy-peer-deps` через `.npmrc` | SHOULD NOT |
+| `import/no-restricted-paths` с 15 layer-direction парами | **MUST** |
+| `eslint-import-resolver-typescript` подключён | **MUST** |
+| ESLint гоняется на CI с `--max-warnings=0` | **MUST** |
+| `eslint-plugin-boundaries` для slice isolation | **MAY** |
+| `import/no-internal-modules` для запрета deep imports | **SHOULD** |
+| Периодический bash-audit пропущенного правилами — [`12-audit.md`](12-audit.md) | **SHOULD** |
+| Глобальный `--legacy-peer-deps` через `.npmrc` | **SHOULD NOT** |
+| Временные нарушения — через `TODO(fsd):`, не через `eslint-disable` | **MUST** |
