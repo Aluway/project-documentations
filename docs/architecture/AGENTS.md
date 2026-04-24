@@ -34,6 +34,8 @@
 | [`07-checklists.md`](07-checklists.md) | **Перед завершением задачи.** Чеклисты по типам + глобальный pre-flight. |
 | [`08-examples.md`](08-examples.md) | Нужны сквозные примеры структуры. |
 | [`09-routing.md`](09-routing.md) | Регистрируете маршрут, решаете nested vs отдельная страница, типизируете route/search params, настраиваете guard или redirect. |
+| [`11-eslint-setup.md`](11-eslint-setup.md) | Настраиваете ESLint под FSD, диагностируете «правило не срабатывает», выбираете между `import/no-restricted-paths` и `eslint-plugin-boundaries`. |
+| [`12-audit.md`](12-audit.md) | Периодический audit архитектуры (квартал / major-релиз): проверки, которые ESLint не ловит — slice isolation, deep imports, self-reference, пустые слайсы, runtime cross-entity. |
 
 ---
 
@@ -46,7 +48,7 @@
 3. **Правила слайса** — [`02-slices-segments.md`](02-slices-segments.md) для именования, [`03-public-api.md`](03-public-api.md) для контракта `index.ts`.
 4. **Импорты** — соблюдайте [`06-import-rules.md`](06-import-rules.md): направление слоёв, алиасы, `import type`.
 5. **Кросс-entity ссылки** — если двум `entities/*` нужен общий тип, используйте `@x`-фасады по [`04-cross-imports.md`](04-cross-imports.md). Кросс-импорты на других слоях запрещены.
-6. **Верификация перед финишем** — прогоните подходящий чеклист из [`07-checklists.md`](07-checklists.md) плюс [глобальный pre-flight](07-checklists.md#h-архитектурный-pre-flight-на-каждый-коммит). Устраните все несоответствия.
+6. **Верификация перед финишем** — прогоните подходящий чеклист из [`07-checklists.md`](07-checklists.md) плюс [глобальный pre-flight](07-checklists.md#i-архитектурный-pre-flight-на-каждый-коммит). Устраните все несоответствия.
 
 ---
 
@@ -75,7 +77,7 @@
 - [ ] Имена сегментов из стандартного набора (`ui`, `api`, `model`, `lib`, `config`).
 - [ ] Нет пустых «на будущее» `entities/*` и `features/*`.
 
-Глубокая проверка — [глобальный pre-flight (раздел H)](07-checklists.md#h-архитектурный-pre-flight-на-каждый-коммит).
+Глубокая проверка — [глобальный pre-flight (раздел I)](07-checklists.md#i-архитектурный-pre-flight-на-каждый-коммит).
 
 ---
 
