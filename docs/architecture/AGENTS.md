@@ -34,6 +34,7 @@
 | [`07-checklists.md`](07-checklists.md) | **Перед завершением задачи.** Чеклисты по типам + глобальный pre-flight. |
 | [`08-examples.md`](08-examples.md) | Нужны сквозные примеры структуры. |
 | [`09-routing.md`](09-routing.md) | Регистрируете маршрут, решаете nested vs отдельная страница, типизируете route/search params, настраиваете guard или redirect. |
+| [`10-migration-guide.md`](10-migration-guide.md) | Мигрируете существующий не-FSD код в FSD 2.1. Планируете этапы, transitional paths, TODO(fsd); знаете подводные камни codemod'ов и Windows/Git Bash. |
 | [`11-eslint-setup.md`](11-eslint-setup.md) | Настраиваете ESLint под FSD, диагностируете «правило не срабатывает», выбираете между `import/no-restricted-paths` и `eslint-plugin-boundaries`. |
 | [`12-audit.md`](12-audit.md) | Периодический audit архитектуры (квартал / major-релиз): проверки, которые ESLint не ловит — slice isolation, deep imports, self-reference, пустые слайсы, runtime cross-entity. |
 

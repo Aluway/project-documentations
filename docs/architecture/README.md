@@ -40,6 +40,7 @@ v2.1 **не ломает совместимость** — существующи
 7. [Чеклисты](07-checklists.md) — по типам задач, для проверки перед завершением.
 8. [Примеры](08-examples.md) — сквозные структурные примеры.
 9. [Роутинг](09-routing.md) — архитектура роутинга: ownership app↔pages, Public API страницы, nested routes, code-splitting, route/search params, navigation, guards.
+10. [Миграция существующего кода](10-migration-guide.md) — инкрементальный перенос в FSD 2.1: порядок этапов, transitional paths, TODO(fsd), подводные камни codemod'ов.
 11. [ESLint: автоматическая валидация слоёв](11-eslint-setup.md) — минимальный конфиг `import/no-restricted-paths`, что он ловит и что **не** ловит.
 12. [Архитектурный audit](12-audit.md) — запускаемый bash-скрипт для проверки инвариантов, которые ESLint не покрывает.
 
